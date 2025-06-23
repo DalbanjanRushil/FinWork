@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FinWork 💸</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+      position: relative;
+    }
+   #money-rain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.money {
+  position: absolute;
+  top: 0;
+  font-size: 2rem;
+  color: gold;
+  font-weight: bold;
+  opacity: 0.85;
+  user-select: none;
+  pointer-events: none;
+  text-shadow: 0 0 18px #ffd700, 0 0 36px #ffd700a0;
+  animation: fall 5s linear infinite;
+  animation-delay: var(--delay);
+  will-change: transform;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(110vh);
+  }
+}
+
+@media (max-width: 600px) {
+  .money {
+    font-size: 1.2rem;
+    animation-duration: 6s;
+  }
+}
+
+    .centered-form {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      position: relative;
+    }
+    .logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    .project-title {
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #ffd700;
+      text-shadow:
+        0 0 20px #ffd700,
+        0 0 40px #ffd700,
+        0 0 80px #ffd700a0,
+        0 0 2px #fff;
+      text-align: center;
+      animation: glow 1.5s ease-in-out infinite alternate;
+      line-height: 1;
+    }
+    @keyframes glow {
+      to {
+        text-shadow:
+          0 0 40px #ffd700,
+          0 0 80px #ffd700,
+          0 0 120px #ffd700a0,
+          0 0 4px #fff;
+      }
+    }
+    .user-name {
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 10px #ffd70080, 0 0 2px #fff;
+      background: rgba(0,0,0,0.25);
+      border-radius: 1rem;
+      padding: 0.5rem 1.5rem;
+      margin-left: 0;
+    }
+    .form-card {
+      background: rgba(255,255,255,0.96);
+      box-shadow: 0 0 24px #0006;
+      border-radius: 1.2rem;
+      padding: 2.5rem 2rem 2rem 2rem;
+      min-width: 320px;
+      max-width: 95vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .form-card h2 {
+      color: #222;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      font-size: 2rem;
+      letter-spacing: 0.02em;
+    }
+    .form-card p {
+      color: #555;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .form-card input[type="text"] {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      font-size: 1.1rem;
+      border-radius: 0.7rem;
+      border: 2px solid #eee;
+      background: #fff;
+      color: #222;
+      margin-bottom: 1.2rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px #0001 inset;
+      outline: none;
+    }
+    .form-card input[type="text"]:focus {
+      border-color: #ffd700;
+      box-shadow: 0 0 0 2px #ffd700;
+    }
+    .form-card button {
+      width: 100%;
+      padding: 0.9rem 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 0.7rem;
+      border: none;
+      background: linear-gradient(90deg, #ffd700 60%, #ffe066 100%);
+      color: #222;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #ffd70044;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .form-card button:hover {
+      background: linear-gradient(90deg, #ffe066 60%, #ffd700 100%);
+      transform: translateY(-2px) scale(1.03);
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto 32px auto;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 2;
+      position: relative;
+    }
+    section { display: none; }
+    section.active { display: block; animation: fadeIn 0.5s ease forwards;}
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    h2 { font-size: 1.8rem; margin-bottom: 1rem; color: #fff; text-align: center;}
+    button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #ffd700 60%, #ffe066 100%);
+      color: #222;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    input[type="text"], input[type="date"], input[type="number"], select {
+      width: 95%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      color: #fff;
+      font-weight: 500;
+    }
+    ul { padding-left: 20px; margin: 16px 0; color: #fff;}
+    li { margin: 8px 0;}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      color: #fff;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    th {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    .summary {
+      display: flex;
+      justify-content: space-between;
+      margin: 16px 0;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+    }
+    #charts-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .chart-box {
+      flex: 1 1 45%;
+      min-width: 280px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 16px;
+      border-radius: 8px;
+    }
+    @media (max-width: 600px) {
+      .logo-row { flex-direction: column; gap: 1rem;}
+      .container { padding: 12px;}
+    }
+    @media (max-width: 500px) {
+      .form-card { padding: 1.3rem 0.7rem 1.2rem 0.7rem; min-width: 0; }
+      .project-title { font-size: 2.2rem; }
+      .user-name { font-size: 1.2rem; }
+    }
+    
+
+  </style>
+</head>
+<body>
+  <!-- Money rain background -->
+  <div id="money-rain" aria-hidden="true"></div>
+
+  <!-- Name form and logo row -->
+  <div class="centered-form" id="welcome-section">
+    <div class="logo-row" id="logo-row" style="display:flex;">
+      <div class="project-title">FinWork</div>
+    </div>
+    <form class="form-card" id="name-form" autocomplete="off">
+      <h2>Welcome!</h2>
+      <p>Enter your name to get started and unlock your financial dashboard.</p>
+      <input type="text" id="nameInput" placeholder="Your name" required autocomplete="name" />
+      <button type="submit">Continue</button>
+    </form>
+  </div>
+
+  <!-- Main app container -->
+  <div class="container" style="display:none;" aria-live="polite">
+    <div class="logo-row" id="main-logo-row"></div>
+    <!-- Dashboard -->
+    <section id="dashboard" class="active" aria-label="Financial Dashboard">
+      <h2>📊 Financial Dashboard</h2>
+      <p id="dashboard-greeting" style="color:#fff; font-weight:600;"></p>
+      <button id="btnGoBudget" type="button">💰 Manage Budget</button>
+      <button id="btnGoGoals" type="button">🎯 Set Goals</button>
+      <button id="btnGoLearn" type="button">📚 Learn Tips</button>
+      <button id="btnViewTransactions" type="button">📋 View Transactions</button>
+      
+    </section>
+    <!-- Budget section -->
+    <section id="budget" aria-label="Budget Manager">
+      <h2>💰 Budget Manager</h2>
+      <form id="transaction-form" aria-label="Add transaction form">
+        <label for="trans-date">Date:</label>
+        <input type="date" id="trans-date" required />
+        <label for="trans-type">Type:</label>
+        <select id="trans-type" required>
+          <option value="" disabled>Select type</option>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+        <label for="trans-category">Category:</label>
+        <select id="trans-category" required>
+          <option value="" disabled>Select category</option>
+        </select>
+        <label for="new-category">Add new category:</label>
+        <input type="text" id="new-category" placeholder="Enter new category name" />
+        <button type="button" id="btnAddCategory">Add Category</button>
+        <label for="trans-amount">Amount (₹):</label>
+        <input type="number" id="trans-amount" step="0.01" min="0" required placeholder="Enter amount" />
+        <button type="submit">Add Transaction</button>
+      </form>
+      <button id="btnBackDashboard1" type="button">⬅️ Back to Dashboard</button>
+    </section>
+    <!-- Goals section -->
+    <section id="goals" aria-label="Financial Goals">
+      <h2>🎯 Financial Goals</h2>
+      <form id="goals-form">
+        <label for="goal-title">Goal Title:</label>
+        <input type="text" id="goal-title" placeholder="Short description" required />
+        <label for="goal-date">Target Date:</label>
+        <input type="date" id="goal-date" required />
+        <button type="submit">Add Goal</button>
+      </form>
+      <ul id="goals-list"></ul>
+      <button id="btnBackDashboard2" type="button">⬅️ Back to Dashboard</button>
+    </section>
+    <!-- Learn section -->
+    <section id="learn" aria-label="Learn Finance Tips">
+      <h2>📚 Learn Finance</h2>
+      <ul>
+        <li>💡 Save before you spend - Build an emergency fund first</li>
+        <li>📈 Invest early and regularly - Compound interest is your friend</li>
+        <li>💳 Avoid debt traps - Pay off high-interest debt first</li>
+        <li>📊 Diversify your income - Multiple income streams reduce risk</li>
+        <li>🎯 Set clear financial goals - Track your progress regularly</li>
+        <li>📱 Use technology wisely - Automate savings and investments</li>
+      </ul>
+      <button id="btnBackDashboard3" type="button">⬅️ Back to Dashboard</button>
+    </section>
+    <!-- Transactions section -->
+    <section id="view-transactions" aria-label="View Transactions">
+      <h2>📋 Transactions</h2>
+      <div class="summary">
+        <div><strong>Total Income</strong> <span id="total-income">₹0.00</span></div>
+        <div><strong>Total Expense</strong> <span id="total-expense">₹0.00</span></div>
+        <div><strong>Balance</strong> <span id="balance">₹0.00</span></div>
+      </div>
+      <table id="transactions-table" aria-label="Transactions Table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Amount (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="no-data"><td colspan="4">No transactions added yet.</td></tr>
+        </tbody>
+      </table>
+      <div id="charts-container">
+        <div class="chart-box">
+          <canvas id="pieCategoryChart" aria-label="Expenses by Category Pie Chart"></canvas>
+        </div>
+        <div class="chart-box">
+          <canvas id="barMonthlyChart" aria-label="Monthly Income and Expense Bar Chart"></canvas>
+        </div>
+      </div>
+      <button id="btnBackDashboard4" type="button">⬅️ Back to Dashboard</button>
+    </section>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Function to create money rain effect
+    const moneyRainCount = window.innerWidth < 600 ? 50 : 120; // Fewer on smaller screens
+
+    function createMoneyRain() {
+        const container = document.getElementById('money-rain');
+        container.innerHTML = ''; // Clear old money elements if any
+
+        for (let i = 0; i < moneyRainCount; i++) {
+            const money = document.createElement('div');
+            money.className = 'money';
+            money.textContent = '₹'; // Indian Rupee symbol
+            money.style.left = Math.random() * 100 + 'vw';
+            money.style.animationDuration = '5s'; // Fixed animation duration for consistent fall speed
+            money.style.animationDelay = Math.random() * 5 + 's'; // Random delay for staggered effect
+            container.appendChild(money);
+        }
+    }
+
+    createMoneyRain(); // Initialize money rain on page load
+
+    // App logic - DOM elements
+    const nameForm = document.getElementById('name-form');
+    const nameInput = document.getElementById('nameInput');
+    const welcomeSection = document.getElementById('welcome-section');
+    const container = document.querySelector('.container');
+    const dashboardGreeting = document.getElementById('dashboard-greeting');
+    const mainLogoRow = document.getElementById('main-logo-row');
+
+    // Navigation section elements
+    const sections = {
+        dashboard: document.getElementById('dashboard'),
+        budget: document.getElementById('budget'),
+        goals: document.getElementById('goals'),
+        learn: document.getElementById('learn'),
+        viewTransactions: document.getElementById('view-transactions')
+    };
+
+    /**
+     * Navigates to a specified section of the application.
+     * Hides all sections and then shows the active one with a fade-in animation.
+     * Also triggers data updates and chart rendering when navigating to the transactions view.
+     * @param {string} sectionName - The ID of the section to navigate to.
+     */
+    function navigate(sectionName) {
+        // Deactivate all sections
+        Object.values(sections).forEach(s => s.classList.remove('active'));
+        // Activate the target section
+        if (sections[sectionName]) {
+            sections[sectionName].classList.add('active');
+        }
+
+        // Specific actions for the 'viewTransactions' section
+        if (sectionName === 'viewTransactions') {
+            updateTransactionsSummary(); // Update summary data
+            renderTransactionsTable(); // Render transactions table
+            renderCharts(); // Render charts
+        }
+    }
+
+    // Event listeners for navigation buttons
+    document.getElementById('btnGoBudget').onclick = () => navigate('budget');
+    document.getElementById('btnGoGoals').onclick = () => navigate('goals');
+    document.getElementById('btnGoLearn').onclick = () => navigate('learn');
+    document.getElementById('btnViewTransactions').onclick = () => navigate('viewTransactions');
+    document.getElementById('btnBackDashboard1').onclick = () => navigate('dashboard');
+    document.getElementById('btnBackDashboard2').onclick = () => navigate('dashboard');
+    document.getElementById('btnBackDashboard3').onclick = () => navigate('dashboard');
+    document.getElementById('btnBackDashboard4').onclick = () => navigate('dashboard');
+
+    // Data storage (using localStorage)
+    let transactions = JSON.parse(localStorage.getItem('finwork_transactions') || '[]');
+    let categories = JSON.parse(localStorage.getItem('finwork_categories') || '[]');
+    let goals = JSON.parse(localStorage.getItem('finwork_goals') || '[]');
+    let userName = localStorage.getItem('finwork_username') || '';
+
+    // Initialize default categories if none exist
+    if (categories.length === 0) {
+        categories = [
+            'Salary', 'Business', 'Investment', 'Food', 'Transportation',
+            'Entertainment', 'Bills', 'Shopping', 'Healthcare', 'Education',
+            'Travel', 'Savings', 'Other'
+        ];
+        localStorage.setItem('finwork_categories', JSON.stringify(categories));
+    }
+
+    /**
+     * Shows the main application interface after a user name is set.
+     * Hides the welcome screen, displays the main container, populates dynamic data,
+     * and initializes charts.
+     */
+    function showMainApp() {
+        welcomeSection.style.display = 'none'; // Hide welcome section
+        container.style.display = 'block'; // Show main app container
+        dashboardGreeting.textContent = `Welcome, ${userName}! 👋`; // Set personalized greeting
+        populateCategories(); // Populate category dropdowns
+        renderGoals(); // Render financial goals
+        updateTransactionsSummary(); // Update financial summary
+        document.getElementById('trans-date').valueAsDate = new Date(); // Set default date for transactions
+
+        // Display project logo and user name in the main app header
+        mainLogoRow.innerHTML = `
+            <div class="project-title">FinWork</div>
+            <div class="user-name">${userName}</div>
+        `;
+
+        // IMPORTANT: Initial render of charts after the app is visible and data is potentially loaded
+        renderCharts();
+    }
+
+    // Check if a username is already stored, if so, skip welcome screen
+    if (userName) {
+        showMainApp();
+    }
+
+    // Event listener for the name input form submission
+    nameForm.onsubmit = (e) => {
+        e.preventDefault(); // Prevent default form submission
+        const name = nameInput.value.trim();
+        if (name) {
+            userName = name;
+            localStorage.setItem('finwork_username', userName); // Store username
+            showMainApp(); // Show the main app
+        } else {
+            // Provide visual feedback for empty input
+            nameInput.style.borderColor = '#f00';
+            setTimeout(() => nameInput.style.borderColor = '', 1200);
+        }
+    };
+
+    // Budget form DOM elements
+    const transactionForm = document.getElementById('transaction-form');
+    const transDate = document.getElementById('trans-date');
+    const transType = document.getElementById('trans-type');
+    const transCategory = document.getElementById('trans-category');
+    const newCategoryInput = document.getElementById('new-category');
+    const btnAddCategory = document.getElementById('btnAddCategory');
+    const transAmount = document.getElementById('trans-amount');
+
+    /**
+     * Populates the category dropdown list with available categories.
+     */
+    function populateCategories() {
+        transCategory.innerHTML = '<option value="" disabled>Select category</option>'; // Clear existing options
+        categories.forEach(cat => {
+            const opt = document.createElement('option');
+            opt.value = cat;
+            opt.textContent = cat;
+            transCategory.appendChild(opt);
+        });
+    }
+
+    // Event listener for category selection change
+    transCategory.addEventListener('change', function() {
+        if (this.value) {
+            this.setCustomValidity(''); // Clear any validation messages
+        }
+    });
+
+    // Event listener for adding a new category
+    btnAddCategory.onclick = () => {
+        const newCat = newCategoryInput.value.trim();
+        if (newCat && !categories.includes(newCat)) { // Check if not empty and not a duplicate
+            categories.push(newCat); // Add to array
+            localStorage.setItem('finwork_categories', JSON.stringify(categories)); // Save to local storage
+            populateCategories(); // Re-populate dropdown
+            newCategoryInput.value = ''; // Clear input field
+        }
+    };
+
+    // Event listener for transaction form submission
+    transactionForm.onsubmit = (e) => {
+        e.preventDefault(); // Prevent default form submission
+        
+        // Explicit validation for category selection
+        if (!transCategory.value) {
+            transCategory.setCustomValidity('Please select a category');
+            transCategory.reportValidity();
+            return;
+        }
+
+        // Create a new transaction object
+        const transaction = {
+            id: Date.now(), // Unique ID based on timestamp
+            date: transDate.value,
+            type: transType.value,
+            category: transCategory.value,
+            amount: parseFloat(transAmount.value) // Parse amount to float
+        };
+
+        transactions.push(transaction); // Add transaction to array
+        localStorage.setItem('finwork_transactions', JSON.stringify(transactions)); // Save to local storage
+        transactionForm.reset(); // Reset form fields
+        transDate.valueAsDate = new Date(); // Set date back to current
+
+        // Provide success feedback to the user
+        const submitBtn = transactionForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = '✅ Added Successfully!';
+        submitBtn.style.background = '#10b981'; // Green background for success
+        setTimeout(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.style.background = ''; // Revert background
+        }, 2000); // Revert after 2 seconds
+    };
+
+    // Goals section DOM elements
+    const goalsForm = document.getElementById('goals-form');
+    const goalTitleInput = document.getElementById('goal-title');
+    const goalDateInput = document.getElementById('goal-date');
+    const goalsList = document.getElementById('goals-list');
+
+    // Event listener for goals form submission
+    goalsForm.onsubmit = (e) => {
+        e.preventDefault(); // Prevent default form submission
+
+        // Create a new goal object
+        const goal = {
+            id: Date.now(),
+            title: goalTitleInput.value.trim(),
+            date: goalDateInput.value,
+            completed: false // Default to not completed
+        };
+
+        goals.push(goal); // Add goal to array
+        localStorage.setItem('finwork_goals', JSON.stringify(goals)); // Save to local storage
+        renderGoals(); // Re-render goals list
+        goalsForm.reset(); // Reset form fields
+    };
+
+    /**
+     * Renders the list of financial goals.
+     * Displays a message if no goals are set.
+     */
+    function renderGoals() {
+        if (goals.length === 0) {
+            goalsList.innerHTML = '<li style="color: #ccc; font-style: italic;">No goals set yet.</li>';
+            return;
+        }
+
+        // Map goals to HTML list items
+        goalsList.innerHTML = goals.map(goal => `
+            <li>
+                <strong>${goal.title}</strong><br>
+                <small>Target: ${new Date(goal.date).toLocaleDateString()}</small>
+                <button onclick="toggleGoal(${goal.id})" style="width:auto; padding:6px 12px; margin-left:10px; font-size:0.9rem;">
+                    ${goal.completed ? '✅ Completed' : '⏳ In Progress'}
+                </button>
+            </li>
+        `).join('');
+    }
+
+    /**
+     * Toggles the completion status of a financial goal.
+     * This function is exposed globally for `onclick` in `renderGoals`.
+     * @param {number} id - The ID of the goal to toggle.
+     */
+    window.toggleGoal = function(id) {
+        const goal = goals.find(g => g.id === id);
+        if (goal) {
+            goal.completed = !goal.completed; // Toggle status
+            localStorage.setItem('finwork_goals', JSON.stringify(goals)); // Save changes
+            renderGoals(); // Re-render goals list
+        }
+    };
+
+    // Transaction summary and table DOM elements
+    const totalIncomeEl = document.getElementById('total-income');
+    const totalExpenseEl = document.getElementById('total-expense');
+    const balanceEl = document.getElementById('balance');
+    const transactionsTableBody = document.querySelector('#transactions-table tbody');
+
+    /**
+     * Calculates and updates the total income, total expense, and balance display.
+     */
+    function updateTransactionsSummary() {
+        const income = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+        const expense = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+        const balance = income - expense;
+
+        totalIncomeEl.textContent = `₹${income.toFixed(2)}`;
+        totalExpenseEl.textContent = `₹${expense.toFixed(2)}`;
+        balanceEl.textContent = `₹${balance.toFixed(2)}`;
+        // Dynamically change balance text color based on value
+        balanceEl.style.color = balance > 0 ? '#10b981' : (balance < 0 ? '#ef4444' : '#fff');
+    }
+
+    /**
+     * Renders the transactions in a table format.
+     * Displays a message if no transactions are added.
+     */
+    function renderTransactionsTable() {
+        if (transactions.length === 0) {
+            transactionsTableBody.innerHTML = '<tr class="no-data"><td colspan="4">No transactions added yet.</td></tr>';
+            return;
+        }
+
+        // Sort transactions by date (most recent first)
+        const sorted = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        // Map transactions to HTML table rows
+        transactionsTableBody.innerHTML = sorted.map(t => `
+            <tr>
+                <td>${new Date(t.date).toLocaleDateString()}</td>
+                <td style="color:${t.type==='income'?'#10b981':'#ef4444'};font-weight:600;">
+                    ${t.type==='income'?'💰 Income':'💸 Expense'}
+                </td>
+                <td>${t.category}</td>
+                <td style="font-weight:600;color:${t.type==='income'?'#10b981':'#ef4444'};">
+                    ${t.type==='income'?'+':'-'}₹${t.amount.toFixed(2)}
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // Chart.js instances
+    let pieChart, barChart;
+
+    /**
+     * Renders both the pie and bar charts.
+     */
+    function renderCharts() {
+        renderPieChart();
+        renderBarChart();
+    }
+
+    /**
+     * Renders the "Expenses by Category" pie chart.
+     * Displays a message if no expense data is available.
+     */
+    function renderPieChart() {
+        const ctx = document.getElementById('pieCategoryChart').getContext('2d');
+        if (pieChart) pieChart.destroy(); // Destroy existing chart before re-rendering
+
+        const expenses = transactions.filter(t => t.type === 'expense');
+        const categoryTotals = {};
+        expenses.forEach(t => { categoryTotals[t.category] = (categoryTotals[t.category] || 0) + t.amount; });
+
+        const labels = Object.keys(categoryTotals);
+        const data = Object.values(categoryTotals);
+
+        // Display 'No data' message if no expenses
+        if (labels.length === 0) {
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Clear canvas
+            ctx.fillStyle = '#ccc';
+            ctx.font = '16px "Segoe UI"';
+            ctx.textAlign = 'center';
+            ctx.fillText('No expense data', ctx.canvas.width / 2, ctx.canvas.height / 2);
+            return;
+        }
+
+        // Create new Chart.js instance for the pie chart
+        pieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: [
+                        '#ffd700', '#ffe066', '#ffb347', '#ffcc80', '#f9d423',
+                        '#f4e285', '#f7cac9', '#b5ead7', '#c7ceea', '#f6abb6'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#fff' } }, // Legend at the bottom
+                    title: { display: true, text: 'Expenses by Category', color: '#fff', font: { size: 16, weight: 'bold' } }
+                }
+            }
+        });
+    }
+
+    /**
+     * Renders the "Monthly Income vs Expenses" bar chart.
+     * Displays a message if no data is available.
+     */
+    function renderBarChart() {
+        const ctx = document.getElementById('barMonthlyChart').getContext('2d');
+        if (barChart) barChart.destroy(); // Destroy existing chart before re-rendering
+
+        const monthlyData = {};
+        transactions.forEach(t => {
+            // Group transactions by month and year
+            const month = new Date(t.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            if (!monthlyData[month]) monthlyData[month] = { income: 0, expense: 0 };
+            monthlyData[month][t.type] += t.amount;
+        });
+
+        const labels = Object.keys(monthlyData).sort(); // Sort months chronologically
+        const incomeData = labels.map(month => monthlyData[month].income);
+        const expenseData = labels.map(month => monthlyData[month].expense);
+
+        // Display 'No data' message if no transactions
+        if (labels.length === 0) {
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Clear canvas
+            ctx.fillStyle = '#ccc';
+            ctx.font = '16px "Segoe UI"';
+            ctx.textAlign = 'center';
+            ctx.fillText('No data', ctx.canvas.width / 2, ctx.canvas.height / 2);
+            return;
+        }
+
+        // Create new Chart.js instance for the bar chart
+        barChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    { label: 'Income', data: incomeData, backgroundColor: '#10b981', borderColor: '#10b981', borderWidth: 1 },
+                    { label: 'Expense', data: expenseData, backgroundColor: '#ef4444', borderColor: '#ef4444', borderWidth: 1 }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { labels: { color: '#fff' } },
+                    title: { display: true, text: 'Monthly Income vs Expenses', color: '#fff', font: { size: 16, weight: 'bold' } }
+                },
+                scales: {
+                    y: { beginAtZero: true, ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                    x: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+                }
+            }
+        });
+    }
+  </script>
+</body>
+</html>
