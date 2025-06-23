@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- GitHub Pages specific base URL -->
+  <base href="/">
   <title>FinWork 💸</title>
   <style>
     body {
@@ -15,45 +17,37 @@
       overflow-x: hidden;
       position: relative;
     }
-   #money-rain {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.money {
-  position: absolute;
-  top: 0;
-  font-size: 2rem;
-  color: gold;
-  font-weight: bold;
-  opacity: 0.85;
-  user-select: none;
-  pointer-events: none;
-  text-shadow: 0 0 18px #ffd700, 0 0 36px #ffd700a0;
-  animation: fall 5s linear infinite;
-  animation-delay: var(--delay);
-  will-change: transform;
-}
-
-@keyframes fall {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(110vh);
-  }
-}
-
-@media (max-width: 600px) {
-  .money {
-    font-size: 1.2rem;
-    animation-duration: 6s;
-  }
-}
-
+    #money-rain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .money {
+      position: absolute;
+      top: 0;
+      font-size: 2rem;
+      color: gold;
+      font-weight: bold;
+      opacity: 0.85;
+      user-select: none;
+      pointer-events: none;
+      text-shadow: 0 0 18px #ffd700, 0 0 36px #ffd700a0;
+      animation: fall 5s linear infinite;
+      animation-delay: var(--delay);
+      will-change: transform;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(110vh); }
+    }
+    @media (max-width: 600px) {
+      .money {
+        font-size: 1.2rem;
+        animation-duration: 6s;
+      }
+    }
     .centered-form {
       min-height: 100vh;
       display: flex;
@@ -261,8 +255,6 @@
       .project-title { font-size: 2.2rem; }
       .user-name { font-size: 1.2rem; }
     }
-    
-
   </style>
 </head>
 <body>
@@ -293,7 +285,6 @@
       <button id="btnGoGoals" type="button">🎯 Set Goals</button>
       <button id="btnGoLearn" type="button">📚 Learn Tips</button>
       <button id="btnViewTransactions" type="button">📋 View Transactions</button>
-      
     </section>
     <!-- Budget section -->
     <section id="budget" aria-label="Budget Manager">
@@ -378,27 +369,28 @@
       <button id="btnBackDashboard4" type="button">⬅️ Back to Dashboard</button>
     </section>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Chart.js with cache-busting version parameter -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js?v=3.7.1"></script>
   <script>
     // Function to create money rain effect
-    const moneyRainCount = window.innerWidth < 600 ? 50 : 120; // Fewer on smaller screens
+    const moneyRainCount = window.innerWidth < 600 ? 50 : 120;
 
     function createMoneyRain() {
         const container = document.getElementById('money-rain');
-        container.innerHTML = ''; // Clear old money elements if any
+        container.innerHTML = '';
 
         for (let i = 0; i < moneyRainCount; i++) {
             const money = document.createElement('div');
             money.className = 'money';
-            money.textContent = '₹'; // Indian Rupee symbol
+            money.textContent = '₹';
             money.style.left = Math.random() * 100 + 'vw';
-            money.style.animationDuration = '5s'; // Fixed animation duration for consistent fall speed
-            money.style.animationDelay = Math.random() * 5 + 's'; // Random delay for staggered effect
+            money.style.animationDuration = '5s';
+            money.style.animationDelay = Math.random() * 5 + 's';
             container.appendChild(money);
         }
     }
 
-    createMoneyRain(); // Initialize money rain on page load
+    createMoneyRain();
 
     // App logic - DOM elements
     const nameForm = document.getElementById('name-form');
@@ -417,25 +409,16 @@
         viewTransactions: document.getElementById('view-transactions')
     };
 
-    /**
-     * Navigates to a specified section of the application.
-     * Hides all sections and then shows the active one with a fade-in animation.
-     * Also triggers data updates and chart rendering when navigating to the transactions view.
-     * @param {string} sectionName - The ID of the section to navigate to.
-     */
     function navigate(sectionName) {
-        // Deactivate all sections
         Object.values(sections).forEach(s => s.classList.remove('active'));
-        // Activate the target section
         if (sections[sectionName]) {
             sections[sectionName].classList.add('active');
         }
 
-        // Specific actions for the 'viewTransactions' section
         if (sectionName === 'viewTransactions') {
-            updateTransactionsSummary(); // Update summary data
-            renderTransactionsTable(); // Render transactions table
-            renderCharts(); // Render charts
+            updateTransactionsSummary();
+            renderTransactionsTable();
+            renderCharts();
         }
     }
 
@@ -449,11 +432,11 @@
     document.getElementById('btnBackDashboard3').onclick = () => navigate('dashboard');
     document.getElementById('btnBackDashboard4').onclick = () => navigate('dashboard');
 
-    // Data storage (using localStorage)
-    let transactions = JSON.parse(localStorage.getItem('finwork_transactions') || '[]');
-    let categories = JSON.parse(localStorage.getItem('finwork_categories') || '[]');
-    let goals = JSON.parse(localStorage.getItem('finwork_goals') || '[]');
-    let userName = localStorage.getItem('finwork_username') || '';
+    // Data storage with GitHub-specific prefix
+    let transactions = JSON.parse(localStorage.getItem('github_finwork_transactions') || '[]');
+    let categories = JSON.parse(localStorage.getItem('github_finwork_categories') || '[]');
+    let goals = JSON.parse(localStorage.getItem('github_finwork_goals') || '[]');
+    let userName = localStorage.getItem('github_finwork_username') || '';
 
     // Initialize default categories if none exist
     if (categories.length === 0) {
@@ -462,48 +445,38 @@
             'Entertainment', 'Bills', 'Shopping', 'Healthcare', 'Education',
             'Travel', 'Savings', 'Other'
         ];
-        localStorage.setItem('finwork_categories', JSON.stringify(categories));
+        localStorage.setItem('github_finwork_categories', JSON.stringify(categories));
     }
 
-    /**
-     * Shows the main application interface after a user name is set.
-     * Hides the welcome screen, displays the main container, populates dynamic data,
-     * and initializes charts.
-     */
     function showMainApp() {
-        welcomeSection.style.display = 'none'; // Hide welcome section
-        container.style.display = 'block'; // Show main app container
-        dashboardGreeting.textContent = `Welcome, ${userName}! 👋`; // Set personalized greeting
-        populateCategories(); // Populate category dropdowns
-        renderGoals(); // Render financial goals
-        updateTransactionsSummary(); // Update financial summary
-        document.getElementById('trans-date').valueAsDate = new Date(); // Set default date for transactions
+        welcomeSection.style.display = 'none';
+        container.style.display = 'block';
+        dashboardGreeting.textContent = `Welcome, ${userName}! 👋`;
+        populateCategories();
+        renderGoals();
+        updateTransactionsSummary();
+        document.getElementById('trans-date').valueAsDate = new Date();
 
-        // Display project logo and user name in the main app header
         mainLogoRow.innerHTML = `
             <div class="project-title">FinWork</div>
             <div class="user-name">${userName}</div>
         `;
 
-        // IMPORTANT: Initial render of charts after the app is visible and data is potentially loaded
         renderCharts();
     }
 
-    // Check if a username is already stored, if so, skip welcome screen
     if (userName) {
         showMainApp();
     }
 
-    // Event listener for the name input form submission
     nameForm.onsubmit = (e) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
         const name = nameInput.value.trim();
         if (name) {
             userName = name;
-            localStorage.setItem('finwork_username', userName); // Store username
-            showMainApp(); // Show the main app
+            localStorage.setItem('github_finwork_username', userName);
+            showMainApp();
         } else {
-            // Provide visual feedback for empty input
             nameInput.style.borderColor = '#f00';
             setTimeout(() => nameInput.style.borderColor = '', 1200);
         }
@@ -518,11 +491,8 @@
     const btnAddCategory = document.getElementById('btnAddCategory');
     const transAmount = document.getElementById('trans-amount');
 
-    /**
-     * Populates the category dropdown list with available categories.
-     */
     function populateCategories() {
-        transCategory.innerHTML = '<option value="" disabled>Select category</option>'; // Clear existing options
+        transCategory.innerHTML = '<option value="" disabled>Select category</option>';
         categories.forEach(cat => {
             const opt = document.createElement('option');
             opt.value = cat;
@@ -531,58 +501,52 @@
         });
     }
 
-    // Event listener for category selection change
     transCategory.addEventListener('change', function() {
         if (this.value) {
-            this.setCustomValidity(''); // Clear any validation messages
+            this.setCustomValidity('');
         }
     });
 
-    // Event listener for adding a new category
     btnAddCategory.onclick = () => {
         const newCat = newCategoryInput.value.trim();
-        if (newCat && !categories.includes(newCat)) { // Check if not empty and not a duplicate
-            categories.push(newCat); // Add to array
-            localStorage.setItem('finwork_categories', JSON.stringify(categories)); // Save to local storage
-            populateCategories(); // Re-populate dropdown
-            newCategoryInput.value = ''; // Clear input field
+        if (newCat && !categories.includes(newCat)) {
+            categories.push(newCat);
+            localStorage.setItem('github_finwork_categories', JSON.stringify(categories));
+            populateCategories();
+            newCategoryInput.value = '';
         }
     };
 
-    // Event listener for transaction form submission
     transactionForm.onsubmit = (e) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
         
-        // Explicit validation for category selection
         if (!transCategory.value) {
             transCategory.setCustomValidity('Please select a category');
             transCategory.reportValidity();
             return;
         }
 
-        // Create a new transaction object
         const transaction = {
-            id: Date.now(), // Unique ID based on timestamp
+            id: Date.now(),
             date: transDate.value,
             type: transType.value,
             category: transCategory.value,
-            amount: parseFloat(transAmount.value) // Parse amount to float
+            amount: parseFloat(transAmount.value)
         };
 
-        transactions.push(transaction); // Add transaction to array
-        localStorage.setItem('finwork_transactions', JSON.stringify(transactions)); // Save to local storage
-        transactionForm.reset(); // Reset form fields
-        transDate.valueAsDate = new Date(); // Set date back to current
+        transactions.push(transaction);
+        localStorage.setItem('github_finwork_transactions', JSON.stringify(transactions));
+        transactionForm.reset();
+        transDate.valueAsDate = new Date();
 
-        // Provide success feedback to the user
         const submitBtn = transactionForm.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
         submitBtn.textContent = '✅ Added Successfully!';
-        submitBtn.style.background = '#10b981'; // Green background for success
+        submitBtn.style.background = '#10b981';
         setTimeout(() => {
             submitBtn.textContent = originalText;
-            submitBtn.style.background = ''; // Revert background
-        }, 2000); // Revert after 2 seconds
+            submitBtn.style.background = '';
+        }, 2000);
     };
 
     // Goals section DOM elements
@@ -591,35 +555,28 @@
     const goalDateInput = document.getElementById('goal-date');
     const goalsList = document.getElementById('goals-list');
 
-    // Event listener for goals form submission
     goalsForm.onsubmit = (e) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
 
-        // Create a new goal object
         const goal = {
             id: Date.now(),
             title: goalTitleInput.value.trim(),
             date: goalDateInput.value,
-            completed: false // Default to not completed
+            completed: false
         };
 
-        goals.push(goal); // Add goal to array
-        localStorage.setItem('finwork_goals', JSON.stringify(goals)); // Save to local storage
-        renderGoals(); // Re-render goals list
-        goalsForm.reset(); // Reset form fields
+        goals.push(goal);
+        localStorage.setItem('github_finwork_goals', JSON.stringify(goals));
+        renderGoals();
+        goalsForm.reset();
     };
 
-    /**
-     * Renders the list of financial goals.
-     * Displays a message if no goals are set.
-     */
     function renderGoals() {
         if (goals.length === 0) {
             goalsList.innerHTML = '<li style="color: #ccc; font-style: italic;">No goals set yet.</li>';
             return;
         }
 
-        // Map goals to HTML list items
         goalsList.innerHTML = goals.map(goal => `
             <li>
                 <strong>${goal.title}</strong><br>
@@ -631,17 +588,12 @@
         `).join('');
     }
 
-    /**
-     * Toggles the completion status of a financial goal.
-     * This function is exposed globally for `onclick` in `renderGoals`.
-     * @param {number} id - The ID of the goal to toggle.
-     */
     window.toggleGoal = function(id) {
         const goal = goals.find(g => g.id === id);
         if (goal) {
-            goal.completed = !goal.completed; // Toggle status
-            localStorage.setItem('finwork_goals', JSON.stringify(goals)); // Save changes
-            renderGoals(); // Re-render goals list
+            goal.completed = !goal.completed;
+            localStorage.setItem('github_finwork_goals', JSON.stringify(goals));
+            renderGoals();
         }
     };
 
@@ -651,9 +603,6 @@
     const balanceEl = document.getElementById('balance');
     const transactionsTableBody = document.querySelector('#transactions-table tbody');
 
-    /**
-     * Calculates and updates the total income, total expense, and balance display.
-     */
     function updateTransactionsSummary() {
         const income = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
         const expense = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
@@ -662,24 +611,17 @@
         totalIncomeEl.textContent = `₹${income.toFixed(2)}`;
         totalExpenseEl.textContent = `₹${expense.toFixed(2)}`;
         balanceEl.textContent = `₹${balance.toFixed(2)}`;
-        // Dynamically change balance text color based on value
         balanceEl.style.color = balance > 0 ? '#10b981' : (balance < 0 ? '#ef4444' : '#fff');
     }
 
-    /**
-     * Renders the transactions in a table format.
-     * Displays a message if no transactions are added.
-     */
     function renderTransactionsTable() {
         if (transactions.length === 0) {
             transactionsTableBody.innerHTML = '<tr class="no-data"><td colspan="4">No transactions added yet.</td></tr>';
             return;
         }
 
-        // Sort transactions by date (most recent first)
         const sorted = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
 
-        // Map transactions to HTML table rows
         transactionsTableBody.innerHTML = sorted.map(t => `
             <tr>
                 <td>${new Date(t.date).toLocaleDateString()}</td>
@@ -697,21 +639,14 @@
     // Chart.js instances
     let pieChart, barChart;
 
-    /**
-     * Renders both the pie and bar charts.
-     */
     function renderCharts() {
         renderPieChart();
         renderBarChart();
     }
 
-    /**
-     * Renders the "Expenses by Category" pie chart.
-     * Displays a message if no expense data is available.
-     */
     function renderPieChart() {
         const ctx = document.getElementById('pieCategoryChart').getContext('2d');
-        if (pieChart) pieChart.destroy(); // Destroy existing chart before re-rendering
+        if (pieChart) pieChart.destroy();
 
         const expenses = transactions.filter(t => t.type === 'expense');
         const categoryTotals = {};
@@ -720,9 +655,8 @@
         const labels = Object.keys(categoryTotals);
         const data = Object.values(categoryTotals);
 
-        // Display 'No data' message if no expenses
         if (labels.length === 0) {
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Clear canvas
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             ctx.fillStyle = '#ccc';
             ctx.font = '16px "Segoe UI"';
             ctx.textAlign = 'center';
@@ -730,7 +664,6 @@
             return;
         }
 
-        // Create new Chart.js instance for the pie chart
         pieChart = new Chart(ctx, {
             type: 'pie',
             data: {
@@ -748,36 +681,30 @@
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { position: 'bottom', labels: { color: '#fff' } }, // Legend at the bottom
+                    legend: { position: 'bottom', labels: { color: '#fff' } },
                     title: { display: true, text: 'Expenses by Category', color: '#fff', font: { size: 16, weight: 'bold' } }
                 }
             }
         });
     }
 
-    /**
-     * Renders the "Monthly Income vs Expenses" bar chart.
-     * Displays a message if no data is available.
-     */
     function renderBarChart() {
         const ctx = document.getElementById('barMonthlyChart').getContext('2d');
-        if (barChart) barChart.destroy(); // Destroy existing chart before re-rendering
+        if (barChart) barChart.destroy();
 
         const monthlyData = {};
         transactions.forEach(t => {
-            // Group transactions by month and year
             const month = new Date(t.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
             if (!monthlyData[month]) monthlyData[month] = { income: 0, expense: 0 };
             monthlyData[month][t.type] += t.amount;
         });
 
-        const labels = Object.keys(monthlyData).sort(); // Sort months chronologically
+        const labels = Object.keys(monthlyData).sort();
         const incomeData = labels.map(month => monthlyData[month].income);
         const expenseData = labels.map(month => monthlyData[month].expense);
 
-        // Display 'No data' message if no transactions
         if (labels.length === 0) {
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Clear canvas
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             ctx.fillStyle = '#ccc';
             ctx.font = '16px "Segoe UI"';
             ctx.textAlign = 'center';
@@ -785,7 +712,6 @@
             return;
         }
 
-        // Create new Chart.js instance for the bar chart
         barChart = new Chart(ctx, {
             type: 'bar',
             data: {
